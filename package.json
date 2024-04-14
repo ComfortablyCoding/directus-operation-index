@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "directus-operation-index",
+  "description": "A Directus index operation for Flows",
+  "icon": "search",
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "directus-extension build",
+    "dev": "directus-extension build -w --no-minify",
+    "link": "directus-extension link",
+    "format": "prettier -c . -w"
+  },
+  "directus:extension": {
+    "type": "operation",
+    "path": {
+      "app": "dist/app.js",
+      "api": "dist/api.js"
+    },
+    "source": {
+      "app": "src/app.ts",
+      "api": "src/api.ts"
+    },
+    "host": "^10.10.0"
+  },
+  "author": {
+    "name": "ComfortablyCoding",
+    "url": "https://github.com/ComfortablyCoding"
+  },
+  "maintainers": [
+    {
+      "name": "ComfortablyCoding",
+      "url": "https://github.com/ComfortablyCoding"
+    }
+  ],
+  "homepage": "https://github.com/ComfortablyCoding/directus-operation-index#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ComfortablyCoding/directus-operation-index.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ComfortablyCoding/directus-operation-index/issues"
+  },
+  "keywords": [
+    "directus",
+    "directus-extension",
+    "directus-extension-operation",
+    "search",
+    "index"
+  ],
+  "devDependencies": {
+    "@directus/extensions-sdk": "11.0.2",
+    "@types/node": "^20.12.7",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5",
+    "vue": "^3.4.21"
+  },
+  "dependencies": {
+    "algoliasearch": "^4.23.3",
+    "meilisearch": "^0.38.0"
+  }
+}
