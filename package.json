@@ -3,7 +3,7 @@
   "name": "directus-operation-index",
   "description": "A Directus index operation for Flows",
   "icon": "search",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "type": "module",
   "files": [
