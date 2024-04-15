@@ -1,4 +1,4 @@
-# directus-operation-slugify
+# directus-operation-index
 
 A [Directus](https://directus.io/) index [operation](https://docs.directus.io/app/flows/operations.html) for [Flows](https://docs.directus.io/app/flows.html#flows).
 
@@ -7,19 +7,19 @@ A [Directus](https://directus.io/) index [operation](https://docs.directus.io/ap
 ###### NPM
 
 ```shell
-npm install directus-operation-slugify
+npm install directus-operation-index
 ```
 
 ###### YARN
 
 ```shell
-yarn add directus-operation-slugify
+yarn add directus-operation-index
 ```
 
 ###### PNPM
 
 ```shell
-pnpm add directus-operation-slugify
+pnpm add directus-operation-index
 ```
 
 ## Engines
