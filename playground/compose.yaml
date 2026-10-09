@@ -1,0 +1,78 @@
+# Directus with the built extension mounted, plus Meilisearch and Typesense. Build it first (`pnpm build`, or `pnpm dev`
+# to rebuild on change); Directus reloads it on every rebuild. Settings come from .env; see .env.example.
+name: operation-index-playground
+
+services:
+  directus:
+    image: directus/directus:${DIRECTUS_VERSION:-latest}
+    # Checks for a newer image on every start, so `latest` stays current.
+    pull_policy: always
+    ports:
+      - '${PORT:-8055}:8055'
+    # For the Algolia credentials, which are only ever read from this file.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # Inside the container; .env's PORT only changes the published port.
+      PORT: 8055
+      SECRET: playground-secret-not-for-production-use
+      PUBLIC_URL: http://localhost:${PORT:-8055}
+      ADMIN_EMAIL: admin@example.com
+      ADMIN_PASSWORD: password
+      DB_CLIENT: sqlite3
+      DB_FILENAME: /directus/database/data.db
+      EXTENSIONS_AUTO_RELOAD: 'true'
+      TELEMETRY: 'false'
+      INDEX_MEILISEARCH_HOST: http://meilisearch:7700
+      INDEX_MEILISEARCH_API_KEY: playground-master-key
+      INDEX_TYPESENSE_HOST: http://typesense:8108
+      INDEX_TYPESENSE_API_KEY: playground-api-key
+    # Lets `docker compose up --wait` return once Directus is ready.
+    healthcheck:
+      test: wget -qO- http://127.0.0.1:8055/server/ping || exit 1
+      interval: 2s
+      timeout: 5s
+      retries: 90
+    volumes:
+      - database:/directus/database
+      - uploads:/directus/uploads
+      # Only what Directus loads, not the source, dependencies or .env. A missing build fails here, rather than
+      # Directus starting without the extension.
+      - type: bind
+        source: ../package.json
+        target: /directus/extensions/directus-operation-index/package.json
+        read_only: true
+      - type: bind
+        source: ../dist
+        target: /directus/extensions/directus-operation-index/dist
+        read_only: true
+        bind:
+          create_host_path: false
+    depends_on:
+      - meilisearch
+      - typesense
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.54.3
+    ports:
+      - '7700:7700'
+    environment:
+      MEILI_MASTER_KEY: playground-master-key
+      MEILI_NO_ANALYTICS: 'true'
+    volumes:
+      - meilisearch:/meili_data
+
+  typesense:
+    image: typesense/typesense:30.2
+    ports:
+      - '8108:8108'
+    command: --data-dir /data --api-key playground-api-key --enable-cors
+    volumes:
+      - typesense:/data
+
+volumes:
+  database:
+  uploads:
+  meilisearch:
+  typesense:
